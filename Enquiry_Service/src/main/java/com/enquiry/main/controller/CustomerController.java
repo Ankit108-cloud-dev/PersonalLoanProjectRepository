@@ -20,6 +20,7 @@ import com.enquiry.main.model.EnquiryStatus;
 import com.enquiry.main.service.CustomerService;
 
 import jakarta.persistence.Enumerated;
+import jakarta.validation.Valid;
 
 @RestController
 public class CustomerController {
@@ -27,7 +28,7 @@ public class CustomerController {
 	@Autowired private CustomerService customerService;
 	
 	@PostMapping("/saveCustomerEnquiry")
-	public ResponseEntity<Customer> saveEnquiryData(@RequestBody Customer customer){
+	public ResponseEntity<Customer> saveEnquiryData(@Valid @RequestBody Customer customer){
 		
 		Customer customer2=customerService.saveCustomerData(customer);
 		

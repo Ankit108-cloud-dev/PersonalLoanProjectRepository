@@ -1,7 +1,11 @@
 package com.enquiry.main.exception_response;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -18,10 +22,16 @@ public class ApplicationExceptionHandler {
 		return new ResponseEntity<String>(invalidId.getMessage(),HttpStatus.NOT_FOUND);
 	}
 	
-	@ExceptionHandler(ConstraintViolationException.class)
-	public ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<Map> excep(MethodArgumentNotValidException m)
 	{
-		return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
+		Map<String, String> errors=new HashMap<>();
+		m.getBindingResult().getFieldErrors().forEach(error->{
+		String property=	error.getField();
+		String message=     error.getDefaultMessage();
+			errors.put(property, message);
+		});
+		return  new ResponseEntity<Map>(errors,HttpStatus.BAD_REQUEST);
 	}
 
 }
