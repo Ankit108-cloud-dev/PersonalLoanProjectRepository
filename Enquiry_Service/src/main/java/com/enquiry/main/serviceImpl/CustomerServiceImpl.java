@@ -1,11 +1,16 @@
 package com.enquiry.main.serviceImpl;
 
 import java.util.List;
+
 import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PatchMapping;
 
@@ -22,7 +27,13 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	
 	@Autowired private CustomerRepository customerRepository;
-
+	
+	 @Autowired
+	 private JavaMailSender mailSender;
+	 
+	@Value("${spring.mail.username}") 
+	private String fromMail;
+	
 	@Override
 	public Customer saveCustomerData(Customer customer) {
 		
@@ -139,5 +150,42 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		return cList;
 	}	
+	public ResponseEntity<String> sendEmail(int customerId) {
+		Optional<Customer> optionalCustomer = customerRepository.findByCustomerId(customerId);
 
+		 Optional<Customer> optionalCustomer1 = customerRepository.findById(customerId);
+		 
+		 SimpleMailMessage mail = new SimpleMailMessage();
+		 
+	        if(optionalCustomer1.isPresent()) 
+	        {
+	            Customer originalCustomer = optionalCustomer1.get();
+	            if(originalCustomer.getCibilScore().getStatus().equalsIgnoreCase("Good") ||
+	                originalCustomer.getCibilScore().getStatus().equalsIgnoreCase("Excellent")) 
+	            {
+
+	                mail.setFrom(fromMail);
+	                mail.setTo(originalCustomer.getEmail());
+	                mail.setSubject("Loan Application Approved");
+	                mail.setText("Dear " + originalCustomer.getFirstName() + " " + originalCustomer.getLastName() + ",\n\n" +
+	                        "Congratulations! Your loan application has been approved.\n\n" +
+	                        "Best regards,\nYour Company");
+
+	                mailSender.send(mail);
+	                return ResponseEntity.ok("Email sent successfully!");
+	            } 
+	            else 
+	            {
+	            	 mail.setFrom(fromMail);
+		             mail.setTo(originalCustomer.getEmail());
+	            	 mail.setSubject("Loan Application Regereted");
+	                 mail.setText("Dear " + originalCustomer.getFirstName() + " " + originalCustomer.getLastName() + ",\n\n" +
+	                         "We regret to inform you that your loan application has not been approved.\n\n" +
+	                         "Best regards,\nYour Company");
+	                mailSender.send(mail);
+	               
+	            }
+	        }
+			return null;
+	}
 }

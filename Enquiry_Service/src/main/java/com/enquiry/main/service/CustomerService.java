@@ -3,6 +3,7 @@ package com.enquiry.main.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.enquiry.main.model.Customer;
@@ -23,5 +24,8 @@ public interface CustomerService {
 	public Customer updateCibilData(int customerId);
 
 	public List<Customer> getCustomerDataByCibilStatus(String status);
+
+	public ResponseEntity<String> sendEmail(int customerId);
+
 
 }

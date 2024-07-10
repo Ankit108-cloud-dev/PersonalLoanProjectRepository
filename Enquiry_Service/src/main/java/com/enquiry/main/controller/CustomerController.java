@@ -64,6 +64,7 @@ public class CustomerController {
 		return new ResponseEntity<String>(message,HttpStatus.ACCEPTED);
 	}
 	
+
 	@PatchMapping("/update_EnquiryCibil/{customerId}")
 	public ResponseEntity<Customer> updateCibilData(@PathVariable int customerId){
 		
@@ -80,6 +81,13 @@ public class CustomerController {
 		
 		return new ResponseEntity<List<Customer>>(cList, HttpStatus.ACCEPTED);
 		
+	}
+	
+
+	@PostMapping("/send_mail/{customerId}")
+	public ResponseEntity<String> sendEmail(@PathVariable int customerId)
+	{
+		return customerService.sendEmail(customerId);
 	}
 	
 }
