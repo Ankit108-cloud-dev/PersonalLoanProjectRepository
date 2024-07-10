@@ -166,26 +166,26 @@ public class CustomerServiceImpl implements CustomerService{
 
 	                mail.setFrom(fromMail);
 	                mail.setTo(originalCustomer.getEmail());
-	                mail.setSubject("Loan Application Approved");
+	                mail.setSubject("Congratulations! Your loan application has been approved.");
 	                mail.setText("Dear " + originalCustomer.getFirstName() + " " + originalCustomer.getLastName() + ",\n\n" +
-	                        "Congratulations! Your loan application has been approved.\n\n" +
-	                        "Best regards,\nYour Company");
+	                        "We are pleased to inform you that, based on our recent evaluation, you are eligible for a personal loan from Personal Finance. We value your relationship with us and want to offer you financial support tailored to your needs.\n\n" +
+	                        "Best regards,\n Personal Finance");
 
 	                mailSender.send(mail);
-	                return ResponseEntity.ok("Email sent successfully!");
+	                
 	            } 
 	            else 
 	            {
 	            	 mail.setFrom(fromMail);
 		             mail.setTo(originalCustomer.getEmail());
-	            	 mail.setSubject("Loan Application Regereted");
+	            	 mail.setSubject("We regret to inform you that your loan application has not been approved.");
 	                 mail.setText("Dear " + originalCustomer.getFirstName() + " " + originalCustomer.getLastName() + ",\n\n" +
-	                         "We regret to inform you that your loan application has not been approved.\n\n" +
-	                         "Best regards,\nYour Company");
+	                         "We hope this message finds you well. Thank you for your interest in obtaining a personal loan with Personal . We appreciate the time and effort you put into your application.\n\n" +
+	                         "Best regards,\n Personal Finance");
 	                mailSender.send(mail);
 	               
 	            }
 	        }
-			return null;
+	        return ResponseEntity.ok("Email sent successfully!");
 	}
 }
