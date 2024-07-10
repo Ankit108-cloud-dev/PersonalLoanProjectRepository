@@ -17,8 +17,11 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer>{
 
 	public List<Customer> findAllByEnquiryStatus(EnquiryStatus enquiryStatus);
 
-	
-
 	public Optional<Customer> findByCustomerIdAndEnquiryStatus(int customerId, EnquiryStatus e);
+
+	public Optional<Customer> findAllByCustomerId(int customerId);
+
+	public List<Customer> findAllByCibilScore_Status(String status);
+
 
 }

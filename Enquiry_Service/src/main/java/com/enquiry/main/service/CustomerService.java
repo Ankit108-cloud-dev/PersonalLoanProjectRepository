@@ -1,6 +1,7 @@
 package com.enquiry.main.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -18,5 +19,9 @@ public interface CustomerService {
 	public String updateCustomerDetails(Customer customer, int customerId);
 
 	public String updateEnquiryStatus(Customer customer, int customerId, EnquiryStatus enquiryStatus);
+
+	public Customer updateCibilData(int customerId);
+
+	public List<Customer> getCustomerDataByCibilStatus(String status);
 
 }

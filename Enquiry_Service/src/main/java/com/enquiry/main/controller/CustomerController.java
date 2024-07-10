@@ -1,7 +1,7 @@
 package com.enquiry.main.controller;
 
 import java.util.List;
-
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,12 +57,29 @@ public class CustomerController {
 		return new ResponseEntity<String>(customer1,HttpStatus.ACCEPTED);
 	}
 	
-	@PatchMapping("/updat_enquiryStatus/{customerId}/{enquiryStatus}")
+	@PatchMapping("/update_enquiryStatus/{customerId}/{enquiryStatus}")
 	public ResponseEntity<String> updateCustomerIdAndEnquiryStatus(@RequestBody Customer customer,@PathVariable int customerId,@PathVariable EnquiryStatus enquiryStatus)
 	{
 		String message = customerService.updateEnquiryStatus(customer,customerId,enquiryStatus);
 		return new ResponseEntity<String>(message,HttpStatus.ACCEPTED);
 	}
 	
-
+	@PatchMapping("/update_EnquiryCibil/{customerId}")
+	public ResponseEntity<Customer> updateCibilData(@PathVariable int customerId){
+		
+		Customer customer2=customerService.updateCibilData(customerId);
+		
+		
+		return new ResponseEntity<>(customer2, HttpStatus.ACCEPTED);
+	}
+	
+	@GetMapping("/get_enquiryCibilStatus/{status}")
+	public ResponseEntity<List<Customer>> getCustomerData(@PathVariable String status){
+		
+		List<Customer> cList=customerService.getCustomerDataByCibilStatus(status);
+		
+		return new ResponseEntity<List<Customer>>(cList, HttpStatus.ACCEPTED);
+		
+	}
+	
 }

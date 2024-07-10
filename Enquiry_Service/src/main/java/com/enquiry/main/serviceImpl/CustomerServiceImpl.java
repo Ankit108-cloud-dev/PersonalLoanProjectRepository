@@ -2,6 +2,7 @@ package com.enquiry.main.serviceImpl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -9,10 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PatchMapping;
 
 import com.enquiry.main.exception.InvalidId;
+import com.enquiry.main.model.Cibil;
 import com.enquiry.main.model.Customer;
 import com.enquiry.main.model.EnquiryStatus;
 import com.enquiry.main.repository.CustomerRepository;
 import com.enquiry.main.service.CustomerService;
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
@@ -88,9 +91,53 @@ public class CustomerServiceImpl implements CustomerService{
 		        throw new InvalidId("Customer ID is not available!!!!!");
 	   }
 	}
-	
-	
-	
-	
+
+	@Override
+	public Customer updateCibilData(int customerId) {
+		
+		Optional<Customer> cID = customerRepository.findAllByCustomerId(customerId);
+		Customer cust=cID.get();
+		if(cID.isPresent()) {
+			Cibil cibilScore = cID.get().getCibilScore();
+			
+			
+				Random random = new Random();
+				int cbil = 300+random.nextInt(600);
+				
+				if (cibilScore == null) {
+					cibilScore = new Cibil();
+
+					cibilScore.setCibilScore(cbil);
+					cust.setCibilScore(cibilScore);
+					
+				}
+
+				if(cbil<=550) {
+					cibilScore.setStatus("Poor");
+					cibilScore.setCibilRemark("Poor Cibil Score");
+				}
+				if(cbil>550&&cbil<=750) {
+					cibilScore.setStatus("Good");
+					cibilScore.setCibilRemark("Good Cibil Score");
+
+				}
+				if(cbil>750) {
+					cibilScore.setStatus("Excellent");
+					cibilScore.setCibilRemark("Excellent Cibil Score");
+
+				}
+				}
+
+          return  customerRepository.save(cust);
+      
+	}
+
+	@Override
+	public List<Customer> getCustomerDataByCibilStatus(String status) {
+		
+		List<Customer> cList =customerRepository.findAllByCibilScore_Status(status);
+		
+		return cList;
+	}	
 
 }

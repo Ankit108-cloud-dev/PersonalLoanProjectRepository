@@ -1,5 +1,10 @@
 package com.enquiry.main.model;
 
+import java.time.LocalDateTime;
+
+import javax.print.attribute.standard.DateTimeAtCreation;
+
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnJava.Range;
 
 import jakarta.persistence.Entity;
@@ -20,7 +25,8 @@ public class Cibil {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int cibilId;
 	private int cibilScore;
-	private String cibilScoreDateTime;
+	@CreationTimestamp
+	private LocalDateTime cibilScoreDateTime;
 	private String status;
 	private String cibilRemark;
 }

@@ -15,6 +15,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,13 +25,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int customerId;
 	
 	@NotEmpty(message = "First name cannot be empty")
 	@Size(min = 1, message = "First name must be at least 6 character long")
+
 	private String firstName;
 	
 	@NotEmpty(message = "Last name cannot be empty")
@@ -51,11 +52,10 @@ public class Customer {
 	@NotEmpty(message = "PAN card number cannot be empty")
 	@Pattern(regexp = "[A-Z]{5}[0-9]{4}[A-Z]{1}", message = "PAN card number should be valid")
 	private String pancardNo;
+	@OneToOne(cascade = CascadeType.MERGE.DETACH.REMOVE.REFRESH)
+	private Cibil cibilScore;
 	
 	@Enumerated(EnumType.STRING)
 	private EnquiryStatus enquiryStatus;
-	
-	@OneToOne(cascade = CascadeType.MERGE.DETACH.REMOVE.REFRESH)
-	private Cibil cibilScore;
 
 }
