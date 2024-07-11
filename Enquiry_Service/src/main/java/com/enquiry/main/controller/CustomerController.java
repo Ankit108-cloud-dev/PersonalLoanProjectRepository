@@ -84,7 +84,7 @@ public class CustomerController {
 	}
 	
 
-	@PostMapping("/send_mail/{customerId}")
+	@PostMapping("/  /{customerId}")
 	public ResponseEntity<String> sendEmail(@PathVariable int customerId)
 	{
 		return customerService.sendEmail(customerId);
