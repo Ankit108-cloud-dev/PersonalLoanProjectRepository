@@ -1,5 +1,7 @@
 package com.loan.main.model;
 
+import java.util.Set;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -66,7 +68,7 @@ public class CustomerLoanApplication {
 	private LoanDisbursement ld;
 	
 	@OneToMany(cascade = CascadeType.MERGE.DETACH.REMOVE.REFRESH)
-	private Ledger ledger;
+	private Set<Ledger> ledger;
 	
 	@OneToOne (cascade = CascadeType.MERGE.DETACH.REMOVE.REFRESH)
 	private SanctionLetter sl;
